@@ -2,20 +2,24 @@
 
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+$datos = json_decode(file_get_contents("php://input"), true);
+
+$operador1 = $datos["operador1"] ?? null;
+$operador2 = $datos["operador2"] ?? null;
+$operacion = $datos["operacion"] ?? null;
+
+if ($operador1 === "" || $operador2 === "") {
 
     echo json_encode([
         "ok" => false,
-        "error" => "Método no permitido"
+        "error" => "Campos vacíos"
     ]);
 
     exit;
 }
-
-$operador1 = $_POST['operador1'] ?? null;
-$operador2 = $_POST['operador2'] ?? null;
-$operacion = $_POST['operacion'] ?? null;
 
 if ($operador1 === null || $operador2 === null || $operacion === null) {
 
